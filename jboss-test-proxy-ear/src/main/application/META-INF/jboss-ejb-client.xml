@@ -2,7 +2,8 @@
 <jboss-ejb-client xmlns="urn:jboss:ejb-client:1.2">
 	<client-context>
 		<ejb-receivers exclude-local-receiver="true">
-			<remoting-ejb-receiver outbound-connection-ref="remote-ejb-connection"/>
+			<remoting-ejb-receiver outbound-connection-ref="remote-ejb-connection-a"/>
+			<remoting-ejb-receiver outbound-connection-ref="remote-ejb-connection-b"/>
 		</ejb-receivers>
 		<clusters>
 			<cluster name="ejb" username="test" security-realm="EJBSecurityRealm">
