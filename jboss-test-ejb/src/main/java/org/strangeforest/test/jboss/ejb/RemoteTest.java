@@ -9,4 +9,5 @@ public interface RemoteTest extends NodeAware {
 	Instant getCurrentTime();
 	String getServerName();
 	long getServerHash();
+	String getAppName();
 }

@@ -10,36 +10,47 @@ import static com.google.common.base.Strings.*;
 public class TestClient {
 
 	public static final String REMOTE_TEST_NAME = "jboss-test-ear/jboss-test-ejb//RemoteTestBean!org.strangeforest.test.jboss.ejb.RemoteTest";
+	public static final String REMOTE_TEST_PROXY_NAME = "jboss-test-proxy-ear/jboss-test-proxy-ejb//RemoteTestProxyBean!org.strangeforest.test.jboss.ejb.RemoteTest";
 	public static final String REMOTE_CALCULATOR_NAME = "jboss-test-ear/jboss-test-ejb//RemoteCalculatorBean!org.strangeforest.test.jboss.ejb.RemoteCalculator";
 
 	public static void main(String[] args) throws NamingException {
 		String port = System.getProperty("jboss-as.port", "4447");
 
+		// JBoss Remoting
 		InitialContext ctx = getInitialContext(port);
-		RemoteTest test = (RemoteTest)ctx.lookup("ejb:" + REMOTE_TEST_NAME);
-		testNode(test);
-		testCluster(test);
+		testNode((RemoteTest)ctx.lookup("ejb:" + REMOTE_TEST_NAME));
+		testNode((RemoteTest)ctx.lookup("ejb:" + REMOTE_TEST_PROXY_NAME));
+		testCalculator((RemoteCalculator)ctx.lookup("ejb:" + REMOTE_CALCULATOR_NAME + "?stateful"));
 
-		RemoteCalculator calc = (RemoteCalculator)ctx.lookup("ejb:" + REMOTE_CALCULATOR_NAME + "?stateful");
-		testCalculator(calc);
-		testCluster(calc);
-
+		// Remote Naming Project
 		InitialContext ctx2 = getInitialContextViaFactory(port);
 		traverse(ctx2, "java:");
-		RemoteTest test2 = (RemoteTest)ctx2.lookup("java:" + REMOTE_TEST_NAME);
-		testNode(test2);
-		testCluster(test2);
-
-		RemoteCalculator calc2 = (RemoteCalculator)ctx2.lookup("java:" + REMOTE_CALCULATOR_NAME);
-		testCalculator(calc2);
-		testCluster(calc2);
+		testNode((RemoteTest)ctx2.lookup("java:" + REMOTE_TEST_NAME));
+		testNode((RemoteTest)ctx2.lookup("java:" + REMOTE_TEST_PROXY_NAME));
+		testCalculator((RemoteCalculator)ctx2.lookup("java:" + REMOTE_CALCULATOR_NAME));
 	}
 
-	private static void testNode(RemoteTest test2) {
-		System.out.println(test2.getCurrentTime());
-		System.out.println(test2.getServerName());
-		System.out.println(test2.getNodeName());
-		System.out.println(test2.getServerHash());
+	private static void testNode(RemoteTest test) {
+		System.out.println();
+		System.out.println(test);
+		System.out.println("CurrentTime: " + test.getCurrentTime());
+		System.out.println("ServerName: " + test.getServerName());
+		System.out.println("NodeName: " + test.getNodeName());
+		System.out.println("ServerHash: " + test.getServerHash());
+		System.out.println("AppName: " + test.getAppName());
+		testCluster(test);
+	}
+
+	private static void testCalculator(RemoteCalculator calc) {
+		System.out.println();
+		System.out.println(calc);
+		calc.set(0);
+		for (int i = 1; i < 100; i+=2) {
+			calc.subtract(i);
+			calc.add(i + 1);
+		}
+		System.out.println(calc.get());
+		testCluster(calc);
 	}
 
 	private static void testCluster(NodeAware nodeAware) {
@@ -50,15 +61,6 @@ public class TestClient {
 			nodes.put(node, count != null ? ++count : 1);
 		}
 		System.out.println(nodes);
-	}
-
-	private static void testCalculator(RemoteCalculator calc) {
-		calc.set(0);
-		for (int i = 1; i < 100; i+=2) {
-			calc.subtract(i);
-			calc.add(i + 1);
-		}
-		System.out.println(calc.get());
 	}
 
 	private static InitialContext getInitialContext(String port) throws NamingException {
@@ -78,6 +80,7 @@ public class TestClient {
 	}
 
 	private static void traverse(Context ctx, String path) throws NamingException {
+		System.out.println();
 		if (isNullOrEmpty(path))
 			traverse(ctx, null, 0);
 		else {

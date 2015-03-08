@@ -19,6 +19,8 @@
 		<module>jboss-test-ejb</module>
 		<module>jboss-test-ear</module>
 		<module>jboss-test-client</module>
+		<module>jboss-test-proxy-ejb</module>
+		<module>jboss-test-proxy-ear</module>
 	</modules>
 
 	<dependencyManagement>
@@ -27,6 +29,12 @@
 			<dependency>
 				<groupId>org.strangeforest.test.jboss</groupId>
 				<artifactId>jboss-test-ejb</artifactId>
+				<type>ejb</type>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.strangeforest.test.jboss</groupId>
+				<artifactId>jboss-test-proxy-ejb</artifactId>
 				<type>ejb</type>
 				<version>${project.version}</version>
 			</dependency>

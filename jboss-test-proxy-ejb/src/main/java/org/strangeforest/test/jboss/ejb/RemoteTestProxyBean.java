@@ -3,35 +3,35 @@ package org.strangeforest.test.jboss.ejb;
 import java.time.*;
 import javax.annotation.security.*;
 import javax.ejb.*;
+import javax.inject.*;
 import javax.naming.*;
 
-import com.google.common.base.*;
-import com.google.common.hash.*;
-
 @Stateless @Remote(RemoteTest.class)
-public class RemoteTestBean implements RemoteTest {
+public class RemoteTestProxyBean implements RemoteTest {
+
+	@Inject @Named(RemoteTestProxyFactory.REMOTE_TEST_DELEGATE) private RemoteTest test;
 
 	@RolesAllowed("Tester")
 	@Override public Instant getCurrentTime() {
-		return Instant.now();
+		return test.getCurrentTime();
 	}
 
 	@RolesAllowed("Tester")
 	@Override public String getServerName() {
-		return System.getProperty("jboss.server.name");
+		return test.getServerName();
 	}
 
 	@RolesAllowed("Tester")
 	@Override public long getServerHash() {
-		HashFunction hf = Hashing.md5();
-		return hf.newHasher()
-				       .putString(getServerName(), Charsets.UTF_8)
-				       .putString(getNodeName(), Charsets.UTF_8)
-			.hash().padToLong();
+		return test.getServerHash();
 	}
 
 	@RolesAllowed("Tester")
 	@Override public String getAppName() {
+		return String.format("%1$s[%2$s]", appName(), test.getAppName());
+	}
+
+	private String appName() {
 		try {
 			return (String)(new InitialContext()).lookup("java:app/AppName");
 		}
@@ -42,6 +42,6 @@ public class RemoteTestBean implements RemoteTest {
 
 	@RolesAllowed("Tester")
 	@Override public String getNodeName() {
-		return System.getProperty("jboss.node.name");
+		return String.format("%1$s[%2$s]", System.getProperty("jboss.node.name"), test.getNodeName());
 	}
 }
