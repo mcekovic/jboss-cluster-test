@@ -15,21 +15,21 @@ public class TestClient {
 	public static void main(String[] args) throws NamingException {
 		String port = System.getProperty("jboss-as.port", "4447");
 
-		// JBoss Remoting
-		InitialContext ctx = getInitialContext();
+		// EJB Client
+		InitialContext ctx = getEJBClientInitialContext();
 		testNode((RemoteTest)ctx.lookup("ejb:" + REMOTE_TEST_NAME));
 		testCalculator((RemoteCalculator)ctx.lookup("ejb:" + REMOTE_CALCULATOR_NAME + "?stateful"));
 
 		// Remote Naming
-		InitialContext ctx2 = getRemoteInitialContext(port);
+		InitialContext ctx2 = getRemoteNamingInitialContext(port);
 		traverse(ctx2, "java:");
 		testNode((RemoteTest)ctx2.lookup("java:" + REMOTE_TEST_NAME));
 		testCalculator((RemoteCalculator)ctx2.lookup("java:" + REMOTE_CALCULATOR_NAME));
 
-		// Remote Naming Alt
-		InitialContext ctx3 = getRemoteInitialContextAlt(port);
+		// Remote Naming + EJB Client
+		InitialContext ctx3 = getRemoteNamingEJBClientInitialContext(port);
 		traverse(ctx3, "java:");
-		testNode((RemoteTest)ctx3.lookup("java:" + REMOTE_TEST_NAME));
-		testCalculator((RemoteCalculator)ctx3.lookup("java:" + REMOTE_CALCULATOR_NAME));
+		testNode((RemoteTest)ctx3.lookup("ejb:" + REMOTE_TEST_NAME));
+		testCalculator((RemoteCalculator)ctx3.lookup("ejb:" + REMOTE_CALCULATOR_NAME + "?stateful"));
 	}
 }

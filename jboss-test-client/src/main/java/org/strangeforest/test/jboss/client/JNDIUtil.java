@@ -7,13 +7,13 @@ import static com.google.common.base.Strings.*;
 
 public class JNDIUtil {
 
-	public static InitialContext getInitialContext() throws NamingException {
+	public static InitialContext getEJBClientInitialContext() throws NamingException {
 		Properties props = new Properties();
 		props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
 		return new InitialContext(props);
 	}
 
-	public static InitialContext getRemoteInitialContext(String port) throws NamingException {
+	public static InitialContext getRemoteNamingInitialContext(String port) throws NamingException {
 		Properties props = new Properties();
 		props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
 		props.put(Context.PROVIDER_URL,"remote://localhost:" + port);
@@ -22,7 +22,7 @@ public class JNDIUtil {
 		return new InitialContext(props);
 	}
 
-	public static InitialContext getRemoteInitialContextAlt(String port) throws NamingException {
+	public static InitialContext getRemoteNamingEJBClientInitialContext(String port) throws NamingException {
 		Properties props = new Properties();
 		props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
 		props.put(Context.PROVIDER_URL,"remote://localhost:" + port);

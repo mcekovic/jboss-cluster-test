@@ -14,16 +14,16 @@ public class TestProxyClient {
 	public static void main(String[] args) throws NamingException {
 		String port = System.getProperty("jboss-as.port", "4447");
 
-		// JBoss Remoting
-		InitialContext ctx = getInitialContext();
+		// EJB Client
+		InitialContext ctx = getEJBClientInitialContext();
 		testNode((RemoteTest)ctx.lookup("ejb:" + REMOTE_TEST_PROXY_NAME));
 
 		// Remote Naming
-		InitialContext ctx2 = getRemoteInitialContext(port);
+		InitialContext ctx2 = getRemoteNamingInitialContext(port);
 		testNode((RemoteTest)ctx2.lookup("java:" + REMOTE_TEST_PROXY_NAME));
 
-		// Remote Naming Alt
-		InitialContext ctx3 = getRemoteInitialContextAlt(port);
-		testNode((RemoteTest)ctx3.lookup("java:" + REMOTE_TEST_PROXY_NAME));
+		// Remote Naming + EJB Client
+		InitialContext ctx3 = getRemoteNamingEJBClientInitialContext(port);
+		testNode((RemoteTest)ctx3.lookup("ejb:" + REMOTE_TEST_PROXY_NAME));
 	}
 }
