@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.strangeforest.test.jboss.ejb.*;
 
-public class Tests {
+public abstract class Tests {
 
 	public static void testNode(RemoteTest test) {
 		System.out.println();

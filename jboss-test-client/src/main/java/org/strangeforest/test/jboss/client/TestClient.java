@@ -9,8 +9,8 @@ import static org.strangeforest.test.jboss.client.Tests.*;
 
 public class TestClient {
 
-	public static final String REMOTE_TEST_NAME = "jboss-test-ear/jboss-test-ejb//RemoteTestBean!org.strangeforest.test.jboss.ejb.RemoteTest";
-	public static final String REMOTE_CALCULATOR_NAME = "jboss-test-ear/jboss-test-ejb//RemoteCalculatorBean!org.strangeforest.test.jboss.ejb.RemoteCalculator";
+	private static final String REMOTE_TEST_NAME = "jboss-test-ear/jboss-test-ejb//RemoteTestBean!org.strangeforest.test.jboss.ejb.RemoteTest";
+	private static final String REMOTE_CALCULATOR_NAME = "jboss-test-ear/jboss-test-ejb//RemoteCalculatorBean!org.strangeforest.test.jboss.ejb.RemoteCalculator";
 
 	public static void main(String[] args) throws NamingException {
 		String port = System.getProperty("jboss-as.port", "4447");

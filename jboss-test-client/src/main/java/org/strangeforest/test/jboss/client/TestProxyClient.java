@@ -9,7 +9,7 @@ import static org.strangeforest.test.jboss.client.Tests.*;
 
 public class TestProxyClient {
 
-	public static final String REMOTE_TEST_PROXY_NAME = "jboss-test-proxy-ear/jboss-test-proxy-ejb//RemoteTestProxyBean!org.strangeforest.test.jboss.ejb.RemoteTest";
+	private static final String REMOTE_TEST_PROXY_NAME = "jboss-test-proxy-ear/jboss-test-proxy-ejb//RemoteTestProxyBean!org.strangeforest.test.jboss.ejb.RemoteTest";
 
 	public static void main(String[] args) throws NamingException {
 		String port = System.getProperty("jboss-as.port", "4447");

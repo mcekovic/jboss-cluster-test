@@ -5,7 +5,7 @@ import javax.naming.*;
 
 import static com.google.common.base.Strings.*;
 
-public class JNDIUtil {
+public abstract class JNDIUtil {
 
 	public static InitialContext getEJBClientInitialContext() throws NamingException {
 		Properties props = new Properties();

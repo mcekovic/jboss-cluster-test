@@ -25,8 +25,8 @@ public class RemoteTestBean implements RemoteTest {
 	@Override public long getServerHash() {
 		HashFunction hf = Hashing.md5();
 		return hf.newHasher()
-				       .putString(getServerName(), Charsets.UTF_8)
-				       .putString(getNodeName(), Charsets.UTF_8)
+			.putString(getServerName(), Charsets.UTF_8)
+			.putString(getNodeName(), Charsets.UTF_8)
 			.hash().padToLong();
 	}
 

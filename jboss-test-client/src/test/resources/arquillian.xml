@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns="http://jboss.org/schema/arquillian"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+	<container qualifier="jbossas-local" default="true">
+		<configuration>
+			<property name="serverConfig">${jbossas.serverConfig:standalone-it.xml}</property>
+			<property name="javaVmArguments">-Xms512m -Xmx1024m -XX:MaxPermSize=512m -Djboss.server.config.dir=src/test/resources/jboss-config</property>
+		</configuration>
+	</container>
+	<container qualifier="jbossas-remote">
+		<configuration>
+			<property name="managementAddress">${jbossas-remote.managementAddress:localhost}</property>
+			<property name="managementPort">${jbossas-remote.managementPort:9999}</property>
+			<property name="username">${jbossas-remote.username:admin}</property>
+			<property name="password">${jbossas-remote.password:admin123.}</property>
+		</configuration>
+	</container>
+</arquillian>
